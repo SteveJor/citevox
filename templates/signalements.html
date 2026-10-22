@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block titre %}{% if admin %}Dossiers du service{% else %}Signalements récents{% endif %}{% endblock %}
+{% block contenu %}
+<h1>{% if admin %}Dossiers de votre service{% else %}Signalements récents{% endif %}</h1>
+<form class="filtres" method="get">
+  <div>
+    <label for="quartier">Quartier</label>
+    <select id="quartier" name="quartier">
+      <option value="">Tous</option>
+      {% for q in quartiers %}<option value="{{ q.id }}"{% if f.quartier == q.id %} selected{% endif %}>{{ q.nom }}</option>{% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="categorie">Catégorie</label>
+    <select id="categorie" name="categorie">
+      <option value="">Toutes</option>
+      {% for c in categories %}<option value="{{ c.id }}"{% if f.categorie == c.id %} selected{% endif %}>{{ c.nom }}</option>{% endfor %}
+    </select>
+  </div>
+  <div>
+    <label for="statut">Statut</label>
+    <select id="statut" name="statut">
+      <option value="">Tous</option>
+      {% for code, libelle in STATUTS.items() %}<option value="{{ code }}"{% if f.statut == code %} selected{% endif %}>{{ libelle }}</option>{% endfor %}
+    </select>
+  </div>
+  <button class="bouton" type="submit">Filtrer</button>
+</form>
+<p>{{ lignes|length }} signalement(s) affiché(s)</p>
+<ul class="cartes">
+  {% for s in lignes %}
+  <li class="carte">
+    {% if s.photo %}<img class="visuel" src="{{ url_for('static', filename='uploads/' ~ s.photo) }}" alt="Photo du problème signalé">
+    {% else %}<div class="placeholder visuel" role="img" aria-label="Pas de photo pour ce signalement"></div>{% endif %}
+    <p><span class="statut {{ s.statut }}">{{ STATUTS[s.statut] }}</span> <small>{{ s.cree_le|date_fr }}</small></p>
+    <h2>{{ s.categorie }} à {{ s.quartier }}</h2>
+    <p>{{ s.description|truncate(110) }}</p>
+    {% if admin %}
+    <a href="{{ url_for('admin_detail', id_signalement=s.id) }}">Gérer le dossier {{ s.code_suivi }}</a>
+    {% else %}
+    <a href="{{ url_for('suivre', code=s.code_suivi) }}">Voir le suivi {{ s.code_suivi }}</a>
+    {% endif %}
+  </li>
+  {% else %}
+  <li class="carte">Aucun signalement ne correspond à ces filtres.</li>
+  {% endfor %}
+</ul>
+{% endblock %}

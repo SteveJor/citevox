@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block titre %}Signalement citoyen des problèmes urbains{% endblock %}
+{% block contenu %}
+<section class="hero">
+  <div>
+    <h1>Un nid-de-poule, un lampadaire éteint, un tas d'ordures : dites-le à la commune</h1>
+    <p>Habitants, vous voyez les problèmes de votre quartier mais ne savez pas à qui les signaler. Avec CITEVOX, vous les déclarez en deux minutes, avec une photo, et vous suivez l'intervention des services techniques jusqu'à la résolution.</p>
+    <p class="actions">
+      <a class="bouton" href="{{ url_for('signaler') }}">Signaler un problème</a>
+      <a class="bouton secondaire" href="{{ url_for('suivre') }}">Suivre un signalement</a>
+    </p>
+  </div>
+  {{ image('images/accueil/hero-signalement.png', "Agent municipal inspectant un nid-de-poule", "visuel") }}
+</section>
+
+<section aria-labelledby="titre-chiffres">
+  <h2 id="titre-chiffres">La plateforme en chiffres</h2>
+  <ul class="chiffres">
+    <li class="chiffre"><strong>{{ chiffres.total }}</strong> signalements reçus</li>
+    <li class="chiffre vedette"><strong>{{ chiffres.resolus }}</strong> problèmes résolus</li>
+    <li class="chiffre"><strong>{{ chiffres.en_cours }}</strong> interventions en cours</li>
+    <li class="chiffre"><strong>{{ chiffres.nouveaux }}</strong> en attente de prise en charge</li>
+  </ul>
+</section>
+
+<section aria-labelledby="titre-types">
+  <h2 id="titre-types">Ce que vous pouvez signaler</h2>
+  <ul class="cartes">
+    {% for c in categories %}
+    <li class="carte">
+        {{ image('images/categories/' ~ c.slug ~ '.png', "Illustration de la catégorie " ~ c.nom, "visuel") }}
+      <h3>{{ c.nom }}</h3>
+      <p>Pris en charge par le service « {{ c.service }} ».</p>
+    </li>
+    {% endfor %}
+  </ul>
+</section>
+
+<section aria-labelledby="titre-etapes">
+  <h2 id="titre-etapes">Comment est traité un signalement</h2>
+  <ol class="cartes etapes">
+    <li class="carte"><h3>Vous signalez</h3><p>Catégorie, quartier, description et photo. Vous recevez un code de suivi.</p></li>
+    <li class="carte"><h3>Le service est alerté</h3><p>Le dossier arrive chez les agents du service concerné.</p></li>
+    <li class="carte"><h3>Une équipe intervient</h3><p>Chaque intervention est datée et commentée.</p></li>
+    <li class="carte"><h3>Le problème est résolu</h3><p>Ou le dossier est rejeté, avec son motif.</p></li>
+  </ol>
+</section>
+
+<section aria-labelledby="titre-avantages">
+  <h2 id="titre-avantages">Pour qui ?</h2>
+  <div class="cartes">
+    <article class="carte"><h3>Pour les habitants</h3><p>Un seul endroit pour signaler, sans compte à créer, et la transparence sur ce qui est fait dans chaque quartier.</p></article>
+    <article class="carte"><h3>Pour les services municipaux</h3><p>Des signalements localisés et classés par service, un historique des interventions et des statistiques pour décider.</p></article>
+  </div>
+</section>
+
+<section aria-labelledby="titre-derniers">
+  <h2 id="titre-derniers">Derniers signalements</h2>
+  <div id="derniers" aria-live="polite" data-api="{{ url_for('api_signalements') }}" data-suivi="{{ url_for('suivre') }}"><p>Chargement…</p></div>
+  <p><a href="{{ url_for('signalements') }}">Voir tous les signalements récents</a></p>
+</section>
+{% endblock %}

@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block titre %}Accueil{% endblock %} | CITEVOX</title>
+  <meta name="description" content="CITEVOX : signalez un problème urbain (voirie, ordures, éclairage, eau) et suivez son traitement.">
+  <link rel="icon" href="{{ url_for('static', filename='images/logo/favicon.svg') }}" type="image/svg+xml">
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+  <script src="{{ url_for('static', filename='js/main.js') }}" defer></script>
+  {% block scripts %}{% endblock %}
+</head>
+<body>
+  <a class="evitement" href="#contenu">Aller au contenu</a>
+  <header class="entete">
+    <a href="{{ url_for('accueil') }}"><img class="logo" src="{{ url_for('static', filename='images/logo/logo.png') }}" alt="CITEVOX, retour à l'accueil" width="295" height="32"></a>
+    <button id="bouton-menu" type="button" aria-label="Ouvrir le menu" aria-controls="menu" aria-expanded="false">&#9776;</button>
+    <nav id="menu" aria-label="Navigation principale">
+      <ul>
+        <li><a href="{{ url_for('signaler') }}">Signaler</a></li>
+        <li><a href="{{ url_for('suivre') }}">Suivre un signalement</a></li>
+        <li><a href="{{ url_for('signalements') }}">Signalements récents</a></li>
+        {% if agent %}
+        <li><a href="{{ url_for('admin') }}">Espace agent</a></li>
+        <li><form method="post" action="{{ url_for('deconnexion') }}"><input type="hidden" name="csrf" value="{{ jeton_csrf() }}"><button type="submit">Se déconnecter</button></form></li>
+        {% else %}
+        <li><a href="{{ url_for('connexion') }}">Espace agent</a></li>
+        {% endif %}
+      </ul>
+    </nav>
+  </header>
+  <main id="contenu" class="conteneur">
+    {% for categorie, message in get_flashed_messages(with_categories=true) %}
+    <p class="message {{ categorie }}" role="status">{{ message }}</p>
+    {% endfor %}
+    {% block contenu %}{% endblock %}
+  </main>
+  <footer class="pied">
+    <div class="conteneur">
+      <p>CITEVOX : la plateforme de signalement des problèmes urbains de la commune.</p>
+      <ul>
+        <li><a href="{{ url_for('signaler') }}">Signaler un problème</a></li>
+        <li><a href="{{ url_for('suivre') }}">Suivre un signalement</a></li>
+        <li><a href="{{ url_for('signalements') }}">Signalements récents</a></li>
+        <li><a href="{{ url_for('connexion') }}">Espace agent</a></li>
+      </ul>
+    </div>
+  </footer>
+</body>
+</html>

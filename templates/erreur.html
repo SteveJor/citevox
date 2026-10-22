@@ -1,0 +1,7 @@
+{% extends "base.html" %}
+{% block titre %}Erreur {{ code }}{% endblock %}
+{% block contenu %}
+<h1>{{ message }}</h1>
+<p>Erreur {{ code }}. Vérifiez l'adresse ou revenez à l'accueil.</p>
+<p><a class="bouton" href="{{ url_for('accueil') }}">Retour à l'accueil</a></p>
+{% endblock %}

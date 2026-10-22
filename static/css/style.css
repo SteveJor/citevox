@@ -1,0 +1,109 @@
+/* CITEVOX : feuille de style unique, mobile d'abord (points de rupture : 768 px et 992 px) */
+:root {
+  /* palette fournie */
+  --ivory: #ecf1e6;
+  --ash-grey: #c0c8b6;
+  --ash-grey-2: #c8d1be;
+  --carbon-black: #21241f;
+  --muted-teal: #8c9f81;
+  /* deux teintes dérivées : teal assombri (texte lisible sur ivoire) et fond des cartes */
+  --teal-fonce: #55654d;
+  --carte: #f7f9f3;
+  --rayon: 1rem;
+  --ombre: 0 .4rem 1.2rem rgba(33, 36, 31, .08);
+}
+* { box-sizing: border-box; }
+body { margin: 0; font-family: "Segoe UI", Arial, sans-serif; line-height: 1.6; color: var(--carbon-black); background: var(--ivory); }
+h1 { font-size: 1.9rem; line-height: 1.2; margin: 1.5rem 0 1rem; }
+h2 { font-size: 1.5rem; line-height: 1.25; margin: 2.5rem 0 1rem; }
+h3 { font-size: 1.15rem; margin: 0 0 .4rem; }
+a { color: var(--teal-fonce); }
+img { max-width: 100%; height: auto; display: block; }
+:focus-visible { outline: 3px solid var(--carbon-black); outline-offset: 2px; }
+.conteneur { max-width: 70rem; margin: 0 auto; padding: 1rem; }
+.evitement { position: absolute; left: -999px; }
+.evitement:focus { left: 1rem; top: 1rem; z-index: 10; padding: .5rem 1rem; background: var(--carte); }
+
+/* En-tête et menu */
+.entete { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; padding: .6rem 1rem; background: var(--carte); box-shadow: var(--ombre); }
+.logo { height: 4rem; width: auto; mix-blend-mode: multiply; }
+#bouton-menu { min-width: 44px; min-height: 44px; border: 0; background: none; color: inherit; font-size: 1.8rem; cursor: pointer; }
+#menu { display: none; width: 100%; }
+#menu.ouvert { display: block; }
+#menu ul { list-style: none; margin: 0; padding: 0; }
+#menu a, #menu button { display: block; padding: .8rem 0; border: 0; background: none; color: var(--carbon-black); font: inherit; font-weight: 600; text-decoration: none; cursor: pointer; }
+#menu a:hover, #menu button:hover { color: var(--teal-fonce); text-decoration: underline; }
+
+/* Boutons */
+.bouton { display: inline-block; padding: .8rem 1.4rem; border: 2px solid var(--carbon-black); border-radius: 2rem; background: var(--carbon-black); color: var(--ivory); font: inherit; font-weight: 700; text-decoration: none; cursor: pointer; }
+.bouton:hover { background: var(--muted-teal); color: var(--carbon-black); }
+.bouton.secondaire { background: transparent; color: var(--carbon-black); }
+.bouton.secondaire:hover { background: var(--muted-teal); }
+.actions { display: flex; flex-wrap: wrap; gap: .8rem; }
+
+/* Accueil */
+.hero { display: grid; gap: 2rem; align-items: center; padding: 1rem 0; }
+.visuel { width: 100%; aspect-ratio: 4 / 3; object-fit: cover; border-radius: var(--rayon); }
+.placeholder { background: linear-gradient(135deg, var(--ash-grey), var(--ash-grey-2)); }
+.cartes, .chiffres { display: grid; gap: 1rem; grid-template-columns: 1fr; list-style: none; margin: 0; padding: 0; }
+.chiffres { grid-template-columns: repeat(2, 1fr); }
+.carte, .chiffre { margin: 0; padding: 1.2rem; border-radius: var(--rayon); background: var(--carte); box-shadow: var(--ombre); }
+.carte .visuel { margin-bottom: .8rem; aspect-ratio: 16 / 10; }
+.carte h2 { margin: .5rem 0; font-size: 1.2rem; }
+.chiffre strong { display: block; font-size: 2.2rem; line-height: 1.1; }
+.chiffre.vedette { background: var(--muted-teal); }
+.etapes { counter-reset: etape; }
+.etapes li::before { counter-increment: etape; content: counter(etape); display: grid; place-items: center; width: 2rem; height: 2rem; margin-bottom: .6rem; border-radius: 50%; background: var(--carbon-black); color: var(--ivory); font-weight: 700; }
+
+/* Formulaires et messages */
+.formulaire { max-width: 38rem; }
+label { display: block; margin-top: 1rem; font-weight: 600; }
+input, select, textarea { width: 100%; padding: .7rem; border: 2px solid var(--muted-teal); border-radius: .6rem; background: var(--carte); color: inherit; font: inherit; }
+.formulaire .bouton { margin-top: 1.2rem; }
+#apercu img { max-width: 16rem; margin-top: .6rem; border-radius: .6rem; }
+#erreur { font-weight: 700; }
+.message { padding: .8rem 1rem; border-left: .4rem solid var(--teal-fonce); border-radius: .6rem; background: var(--ash-grey-2); }
+.message.erreur { border-color: var(--carbon-black); font-weight: 700; }
+.filtres { display: grid; gap: .5rem; }
+.filtres .bouton { margin-top: 1rem; }
+
+/* Statuts, détails, statistiques */
+.statut { display: inline-block; padding: .1rem .7rem; border: 2px solid transparent; border-radius: 1rem; background: var(--ash-grey); font-size: .85rem; font-weight: 700; }
+.statut.en_cours { background: var(--muted-teal); }
+.statut.resolu { background: var(--carbon-black); color: var(--ivory); }
+.statut.rejete { background: transparent; border-color: var(--carbon-black); }
+.detail { max-width: 42rem; margin-top: 1.5rem; }
+dt { font-weight: 700; }
+dd { margin: 0 0 .7rem; }
+.grille-stats { display: grid; gap: 1rem; }
+.barre { display: grid; grid-template-columns: minmax(5rem, 9rem) 1fr 3.5rem; gap: .5rem; align-items: center; margin: .4rem 0; font-size: .9rem; }
+.jauge { height: .8rem; overflow: hidden; border-radius: .4rem; background: var(--ash-grey-2); }
+.jauge span { display: block; height: 100%; background: var(--teal-fonce); }
+.defile { overflow-x: auto; }
+table { width: 100%; border-collapse: collapse; font-size: .9rem; }
+th, td { padding: .4rem .6rem; border-bottom: 1px solid var(--ash-grey); text-align: left; }
+
+/* Pied de page */
+.pied { margin-top: 3rem; background: var(--carbon-black); color: var(--ivory); }
+.pied a { color: var(--ash-grey-2); }
+.pied ul { display: flex; flex-wrap: wrap; gap: 1rem; list-style: none; padding: 0; }
+
+/* Tablette : à partir de 768 px */
+@media (min-width: 768px) {
+  #bouton-menu { display: none; }
+  #menu { display: block; width: auto; }
+  #menu ul { display: flex; align-items: center; gap: 1.5rem; }
+  .cartes { grid-template-columns: repeat(2, 1fr); }
+  .chiffres { grid-template-columns: repeat(4, 1fr); }
+  .filtres { grid-template-columns: repeat(3, 1fr) auto; align-items: end; }
+  .grille-stats { grid-template-columns: repeat(2, 1fr); }
+  .carte.large { grid-column: 1 / -1; }
+}
+
+/* Ordinateur : à partir de 992 px */
+@media (min-width: 992px) {
+  h1 { font-size: 2.6rem; }
+  .hero { grid-template-columns: 3fr 2fr; }
+  .cartes { grid-template-columns: repeat(3, 1fr); }
+  .etapes { grid-template-columns: repeat(4, 1fr); }
+}

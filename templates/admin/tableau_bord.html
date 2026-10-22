@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+{% block titre %}Tableau de bord{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/statistiques.js') }}" defer></script>{% endblock %}
+{% block contenu %}
+<h1>Tableau de bord</h1>
+<p>{{ agent.nom }}, service « {{ agent.service }} »</p>
+<ul class="chiffres">
+  {% for code, libelle in STATUTS.items() %}
+  <li class="chiffre{% if code == 'nouveau' %} vedette{% endif %}"><strong>{{ compteurs.get(code, 0) }}</strong> {{ libelle }}</li>
+  {% endfor %}
+</ul>
+<p><a class="bouton" href="{{ url_for('admin_signalements') }}">Gérer les dossiers de mon service</a></p>
+
+<section id="statistiques" data-api="{{ url_for('api_statistiques') }}" aria-labelledby="titre-stats">
+  <h2 id="titre-stats">Statistiques de la commune</h2>
+  <div class="grille-stats">
+    <article class="carte"><h3>Signalements par catégorie</h3><div id="stat-categories"><p>Chargement…</p></div></article>
+    <article class="carte"><h3>Signalements par quartier</h3><div id="stat-quartiers"><p>Chargement…</p></div></article>
+    <article class="carte"><h3>Délai moyen de résolution par service (en jours)</h3>
+      <div id="stat-delais"><p>Chargement…</p></div>
+      <p><small>Délai entre le signalement et la première intervention « résolu ». Dossiers rejetés ou non résolus exclus.</small></p></article>
+    <article class="carte"><h3>Évolution par semaine</h3><div id="stat-semaines"><p>Chargement…</p></div></article>
+    <article class="carte large"><h3>Catégorie et quartier</h3><div id="stat-croise" class="defile"><p>Chargement…</p></div></article>
+    <article class="carte large"><h3>Non traités depuis plus de 7 jours : <span id="nb-non-traites">…</span></h3>
+      <div id="stat-non-traites" class="defile"><p>Chargement…</p></div></article>
+  </div>
+</section>
+{% endblock %}

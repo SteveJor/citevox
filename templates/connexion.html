@@ -1,0 +1,14 @@
+{% extends "base.html" %}
+{% block titre %}Connexion agent{% endblock %}
+{% block contenu %}
+<h1>Espace agent</h1>
+<p>Réservé aux agents des services techniques de la commune.</p>
+<form class="formulaire" method="post">
+  <input type="hidden" name="csrf" value="{{ jeton_csrf() }}">
+  <label for="login">Identifiant</label>
+  <input id="login" name="login" autocomplete="username" required>
+  <label for="mdp">Mot de passe</label>
+  <input id="mdp" name="mdp" type="password" autocomplete="current-password" required>
+  <button class="bouton" type="submit">Se connecter</button>
+</form>
+{% endblock %}

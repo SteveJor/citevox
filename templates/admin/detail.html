@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block titre %}Dossier {{ s.code_suivi }}{% endblock %}
+{% block contenu %}
+<h1>Dossier {{ s.code_suivi }}</h1>
+<p><a href="{{ url_for('admin_signalements') }}">Retour aux dossiers</a></p>
+<article class="carte detail">
+  <p><span class="statut {{ s.statut }}">{{ STATUTS[s.statut] }}</span></p>
+  <dl>
+    <dt>Catégorie</dt><dd>{{ s.categorie }} (service {{ s.service }})</dd>
+    <dt>Quartier</dt><dd>{{ s.quartier }}</dd>
+    <dt>Adresse ou repère</dt><dd>{{ s.reperage }}</dd>
+    <dt>Téléphone du citoyen</dt><dd>{{ s.telephone }}</dd>
+    <dt>Date du signalement</dt><dd>{{ s.cree_le|date_fr }}</dd>
+    <dt>Description</dt><dd>{{ s.description }}</dd>
+  </dl>
+  {% if s.photo %}<img class="visuel" src="{{ url_for('static', filename='uploads/' ~ s.photo) }}" alt="Photo du problème signalé">{% endif %}
+</article>
+
+<h2>Historique des interventions</h2>
+{% if historique %}
+<ul>
+  {% for i in historique %}<li>{{ i.date_intervention|date_fr }}, {{ i.agent }}, {{ STATUTS[i.nouveau_statut]|lower }} : {{ i.commentaire }}</li>{% endfor %}
+</ul>
+{% else %}
+<p>Aucune intervention enregistrée.</p>
+{% endif %}
+
+{% if s.statut in ('nouveau', 'en_cours') %}
+<h2>Ajouter une intervention</h2>
+<form class="formulaire" method="post" action="{{ url_for('admin_intervention', id_signalement=s.id) }}">
+  <input type="hidden" name="csrf" value="{{ jeton_csrf() }}">
+  <label for="commentaire">Commentaire</label>
+  <textarea id="commentaire" name="commentaire" rows="3" minlength="5" required></textarea>
+  <label for="statut">Nouveau statut</label>
+  <select id="statut" name="statut"><option value="en_cours">En cours</option><option value="resolu">Résolu</option></select>
+  <button class="bouton" type="submit">Enregistrer l'intervention</button>
+</form>
+
+<h2>Rejeter ce signalement</h2>
+<form class="formulaire" method="post" action="{{ url_for('admin_intervention', id_signalement=s.id) }}">
+  <input type="hidden" name="csrf" value="{{ jeton_csrf() }}">
+  <input type="hidden" name="statut" value="rejete">
+  <label for="motif">Motif du rejet (obligatoire)</label>
+  <textarea id="motif" name="commentaire" rows="3" minlength="10" required></textarea>
+  <button class="bouton secondaire" type="submit">Rejeter le signalement</button>
+</form>
+{% else %}
+<p>Ce dossier est clos : il ne peut plus être modifié.</p>
+{% endif %}
+{% endblock %}

@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block titre %}Signaler un problème{% endblock %}
+{% block scripts %}<script src="{{ url_for('static', filename='js/signalement.js') }}" defer></script>{% endblock %}
+{% block contenu %}
+<h1>Signaler un problème</h1>
+<p>Aucun compte n'est nécessaire. Votre numéro de téléphone reste confidentiel : il n'est jamais affiché publiquement.</p>
+<form id="form-signalement" class="formulaire" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="csrf" value="{{ jeton_csrf() }}">
+
+  <label for="categorie">Catégorie</label>
+  <select id="categorie" name="categorie" required>
+    <option value="">Choisir une catégorie</option>
+    {% for c in categories %}<option value="{{ c.id }}"{% if donnees.get('categorie') == c.id|string %} selected{% endif %}>{{ c.nom }}</option>{% endfor %}
+  </select>
+
+  <label for="quartier">Quartier</label>
+  <select id="quartier" name="quartier" required>
+    <option value="">Choisir un quartier</option>
+    {% for q in quartiers %}<option value="{{ q.id }}"{% if donnees.get('quartier') == q.id|string %} selected{% endif %}>{{ q.nom }}</option>{% endfor %}
+  </select>
+
+  <label for="reperage">Adresse ou repère</label>
+  <input id="reperage" name="reperage" maxlength="150" required value="{{ donnees.get('reperage', '') }}">
+
+  <label for="description">Description (20 caractères minimum)</label>
+  <textarea id="description" name="description" rows="5" minlength="20" maxlength="1000" required>{{ donnees.get('description', '') }}</textarea>
+
+  <label for="telephone">Votre téléphone</label>
+  <input id="telephone" name="telephone" type="tel" placeholder="6XX XX XX XX" required value="{{ donnees.get('telephone', '') }}">
+
+  <label for="photo">Photo du problème (JPG ou PNG, moins de 2 Mo)</label>
+  <input id="photo" name="photo" type="file" required accept=".jpg,.jpeg,.png,image/jpeg,image/png">
+  <div id="apercu"></div>
+
+  <p id="erreur" role="alert"></p>
+  <button class="bouton" type="submit">Envoyer le signalement</button>
+</form>
+{% endblock %}
