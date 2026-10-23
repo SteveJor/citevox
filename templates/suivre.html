@@ -1,31 +1,33 @@
 {% extends "base.html" %}
 {% block titre %}Suivre un signalement{% endblock %}
 {% block contenu %}
-<h1>Suivre un signalement</h1>
-<form class="formulaire" method="get">
-  <label for="code">Code de suivi</label>
-  <input id="code" name="code" value="{{ code }}" placeholder="CV-XXXXXXXXXX" autocomplete="off" required>
-  <button class="bouton" type="submit">Rechercher</button>
-</form>
-{% if s %}
-<article class="carte detail">
-  <h2>Signalement {{ s.code_suivi }}</h2>
-  <p><span class="statut {{ s.statut }}">{{ STATUTS[s.statut] }}</span></p>
-  <dl>
-    <dt>Catégorie</dt><dd>{{ s.categorie }}</dd>
-    <dt>Quartier</dt><dd>{{ s.quartier }}</dd>
-    <dt>Date du signalement</dt><dd>{{ s.cree_le|date_fr }}</dd>
-    <dt>Description</dt><dd>{{ s.description }}</dd>
-  </dl>
-  {% if s.photo %}<img class="visuel" src="{{ url_for('static', filename='uploads/' ~ s.photo) }}" alt="Photo du problème signalé">{% endif %}
-  <h3>Historique des interventions</h3>
-  {% if historique %}
-  <ul>
-    {% for i in historique %}<li>{{ i.date_intervention|date_fr }}, {{ STATUTS[i.nouveau_statut]|lower }} : {{ i.commentaire }}</li>{% endfor %}
-  </ul>
-  {% else %}
-  <p>Aucune intervention pour le moment.</p>
+<div style="height: 70vh;">
+  <h1 style="text-align: center;">Suivre un signalement</h1>
+  <form class="formulaire" method="get">
+    <label for="code">Code de suivi</label>
+    <input id="code" name="code" value="{{ code }}" placeholder="CV-XXXXXXXXXX" autocomplete="off" required>
+    <button class="bouton" type="submit">Rechercher</button>
+  </form>
+  {% if s %}
+  <article class="carte detail" style="margin: 0 auto;">
+    <h2>Signalement {{ s.code_suivi }}</h2>
+    <p><span class="statut {{ s.statut }}">{{ STATUTS[s.statut] }}</span></p>
+    <dl>
+      <dt>Catégorie</dt><dd>{{ s.categorie }}</dd>
+      <dt>Quartier</dt><dd>{{ s.quartier }}</dd>
+      <dt>Date du signalement</dt><dd>{{ s.cree_le|date_fr }}</dd>
+      <dt>Description</dt><dd>{{ s.description }}</dd>
+    </dl>
+    {% if s.photo %}<img class="visuel" src="{{ url_for('static', filename='uploads/' ~ s.photo) }}" alt="Photo du problème signalé">{% endif %}
+    <h3>Historique des interventions</h3>
+    {% if historique %}
+    <ul>
+      {% for i in historique %}<li>{{ i.date_intervention|date_fr }}, {{ STATUTS[i.nouveau_statut]|lower }} : {{ i.commentaire }}</li>{% endfor %}
+    </ul>
+    {% else %}
+    <p>Aucune intervention pour le moment.</p>
+    {% endif %}
+  </article>
   {% endif %}
-</article>
-{% endif %}
+</div>
 {% endblock %}

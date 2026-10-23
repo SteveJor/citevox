@@ -1,8 +1,9 @@
 {% extends "base.html" %}
 {% block titre %}Connexion agent{% endblock %}
 {% block contenu %}
+{{ image('images/login.png', "illustration pour la page d'erreur", "login") }}
 <h1>Espace agent</h1>
-<p>Réservé aux agents des services techniques de la commune.</p>
+<p class="precedes-form">Réservé aux agents des services techniques de la commune.</p>
 <form class="formulaire" method="post">
   <input type="hidden" name="csrf" value="{{ jeton_csrf() }}">
   <label for="login">Identifiant</label>

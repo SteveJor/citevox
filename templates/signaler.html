@@ -3,7 +3,7 @@
 {% block scripts %}<script src="{{ url_for('static', filename='js/signalement.js') }}" defer></script>{% endblock %}
 {% block contenu %}
 <h1>Signaler un problème</h1>
-<p>Aucun compte n'est nécessaire. Votre numéro de téléphone reste confidentiel : il n'est jamais affiché publiquement.</p>
+<p class="precedes-form">Aucun compte n'est nécessaire. Votre numéro de téléphone reste confidentiel : il n'est jamais affiché publiquement.</p>
 <form id="form-signalement" class="formulaire" method="post" enctype="multipart/form-data">
   <input type="hidden" name="csrf" value="{{ jeton_csrf() }}">
 
